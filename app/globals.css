@@ -1,0 +1,305 @@
+@import "tailwindcss";
+
+/* ============================================================================
+   TEJBIDYA — DESIGN SYSTEM
+   ----------------------------------------------------------------------------
+   One light, warm, natural palette. Warm ivory paper, soft off-white sections,
+   a single deep tea-green used as the only dark surface, muted sage and taupe
+   for support, and brass reserved for hairlines and small marks — never a fill.
+
+   No component invents a colour: every value the UI uses comes from a token
+   defined below.
+   ========================================================================== */
+
+@theme {
+  /* ---- Paper: the three grounds a section may sit on ---------------------- */
+  --color-paper:        #FBF8F1;  /* page ground — warm ivory                 */
+  --color-paper-soft:   #F5F1E6;  /* alternating section — soft off-white     */
+  --color-paper-deep:   #EBE5D6;  /* insets, image placeholders, table zebra  */
+
+  /* ---- Ink: warm charcoal, three steps of emphasis ----------------------- */
+  --color-ink:          #22201C;  /* headings and primary text                */
+  --color-ink-soft:     #57524A;  /* body copy                                */
+  --color-ink-mute:     #8B8478;  /* meta, captions, labels                   */
+
+  /* ---- Line: hairlines. Always warm, never neutral grey. ----------------- */
+  --color-line:         #E5DFD0;
+  --color-line-strong:  #D3CBB8;
+
+  /* ---- Leaf: the muted tea green. 900 is the one dark surface. ----------- */
+  --color-leaf-900:     #232B22;
+  --color-leaf-800:     #2D372B;
+  --color-leaf-700:     #45543F;
+  --color-leaf-600:     #5C6D53;
+  --color-leaf-400:     #93A187;
+  --color-leaf-200:     #C7D0BC;
+  --color-leaf-100:     #E3E8DA;
+
+  /* ---- Clay: earthy brown / taupe accent --------------------------------- */
+  --color-clay-700:     #6E5945;
+  --color-clay-500:     #937B5D;
+  --color-clay-200:     #DFD5C4;
+
+  /* ---- Brass: tiny premium accents only ---------------------------------- */
+  --color-brass-600:    #9A7A38;
+  --color-brass-500:    #B69754;
+  --color-brass-300:    #DECFA8;
+
+  /* ---- Type -------------------------------------------------------------- */
+  --font-display: var(--font-newsreader), "Newsreader", Georgia, serif;
+  --font-sans:    var(--font-instrument), ui-sans-serif, system-ui, -apple-system,
+                  "Segoe UI", sans-serif;
+
+  /* ---- Motion ------------------------------------------------------------ */
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-calm: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ---- Layout ------------------------------------------------------------ */
+  --header-h: 68px;
+
+  /* ---- Animation --------------------------------------------------------- */
+  --animate-drift: drift 34s var(--ease-calm) infinite alternate;
+}
+
+/*
+  One very slow push on the hero photograph. 1.07 rather than the 1.12 used
+  before: past about 1.08 the crop visibly walks across the frame, which reads
+  as a slideshow rather than stillness.
+*/
+@keyframes drift {
+  from { transform: scale(1.02) translate3d(0, 0, 0); }
+  to   { transform: scale(1.07) translate3d(-1%, -1%, 0); }
+}
+
+@keyframes fadeSwap {
+  from { opacity: 0; transform: translate3d(0, 6px, 0); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ============================================================================
+   BASE
+   ========================================================================== */
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--header-h) + 1.5rem);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.6;
+    font-feature-settings: "kern", "liga", "calt";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -0.012em;
+    text-wrap: balance;
+  }
+
+  p { text-wrap: pretty; }
+
+  ::selection {
+    background-color: var(--color-leaf-900);
+    color: var(--color-paper);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brass-600);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* Thin scrollbar tuned to the paper ground rather than the OS default. */
+  * { scrollbar-width: thin; scrollbar-color: var(--color-line-strong) transparent; }
+  *::-webkit-scrollbar { width: 10px; height: 10px; }
+  *::-webkit-scrollbar-track { background: transparent; }
+  *::-webkit-scrollbar-thumb {
+    background: var(--color-line-strong);
+    border-radius: 10px;
+    border: 3px solid var(--color-paper);
+  }
+}
+
+/* ============================================================================
+   TYPE SCALE
+   ----------------------------------------------------------------------------
+   Every heading on the site uses one of these classes. Sizes are set once, here,
+   so no page invents its own clamp() — which is how the previous build ended up
+   with four different sizes all meaning "section heading".
+   ========================================================================== */
+
+@layer components {
+  .t-display {                                   /* homepage hero — used once */
+    font-family: var(--font-display);
+    font-size: clamp(2.6rem, 5.6vw, 4.5rem);
+    font-weight: 400;
+    line-height: 1.04;
+    letter-spacing: -0.022em;
+  }
+
+  .t-h1 {                                        /* interior page title */
+    font-family: var(--font-display);
+    font-size: clamp(2.1rem, 4.4vw, 3.4rem);
+    font-weight: 400;
+    line-height: 1.08;
+    letter-spacing: -0.018em;
+  }
+
+  .t-h2 {                                        /* section heading */
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 3.2vw, 2.6rem);
+    font-weight: 400;
+    line-height: 1.14;
+    letter-spacing: -0.015em;
+  }
+
+  .t-h3 {                                        /* sub-section, product name */
+    font-family: var(--font-display);
+    font-size: clamp(1.3rem, 1.9vw, 1.6rem);
+    font-weight: 400;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+  }
+
+  .t-h4 {                                        /* card title, stat value */
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 400;
+    line-height: 1.3;
+  }
+
+  .t-lead {
+    font-size: clamp(1.0625rem, 1.2vw, 1.15rem);
+    line-height: 1.65;
+  }
+
+  .t-body { font-size: 1rem;   line-height: 1.7;  }
+  .t-small { font-size: 0.9rem; line-height: 1.65; }
+
+  /* Small-caps label — the one typographic signature the brand repeats. */
+  .t-eyebrow {
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+
+  /* Data label — same idea, slightly larger, used in dt and captions. */
+  .t-meta {
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    line-height: 1.3;
+  }
+
+  /*
+    Cross-fade for content that swaps in place (map region, journey stage).
+    Applied to a keyed element so React remounts it and the animation replays —
+    which is cheaper than mounting every panel at once and toggling opacity, the
+    pattern the previous build used to download seven images at a time.
+  */
+  .fade-swap { animation: fadeSwap 0.5s var(--ease-soft) both; }
+
+  /* Underline that draws in from the left. Text links only. */
+  .link-draw { position: relative; display: inline-block; }
+  .link-draw::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    bottom: -2px;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.5;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.45s var(--ease-soft);
+  }
+  .link-draw:hover::after,
+  .link-draw:focus-visible::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+
+/* ============================================================================
+   SCROLL REVEAL
+   ----------------------------------------------------------------------------
+   Hidden in CSS, unveiled by one IntersectionObserver per element
+   (components/Reveal.tsx) which then disconnects. The .no-js guard means a
+   JavaScript failure shows everything rather than a blank page.
+   ========================================================================== */
+
+[data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 18px, 0);
+  transition:
+    opacity 0.7s var(--ease-soft),
+    transform 0.7s var(--ease-soft);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+[data-reveal="visible"] { opacity: 1; transform: none; }
+.no-js [data-reveal] { opacity: 1; transform: none; }
+
+/* ============================================================================
+   GOOGLE TRANSLATE
+   ----------------------------------------------------------------------------
+   Set by the inline bootstrap in <head> (lib/translate.ts) the instant a
+   non-English `googtrans` cookie is found, and lifted once Google has
+   finished swapping the DOM. Covers the page for that whole window so a
+   flash of untranslated English never shows.
+   ========================================================================== */
+
+/* Only ever set on a fresh load that has a saved language to restore —
+   switching afterwards happens in place, with no cover and no reload. */
+html[data-translating] body { visibility: hidden; }
+
+/* Google's own toolbar/banner and the "skiptranslate" iframe it injects: this
+   site drives switching itself, so none of that chrome should ever be visible.
+   The gadget container is *not* display:none'd here — it is clipped inline in
+   lib/translate.ts, because the <select> we drive has to stay laid out. */
+.goog-te-banner-frame,
+.goog-te-gadget-icon,
+body > .skiptranslate {
+  display: none !important;
+}
+body {
+  top: 0 !important;
+}
+
+/* Google marks freshly swapped phrases with a yellow highlight on hover.
+   It fights every surface colour in the palette, so it goes. */
+.goog-text-highlight {
+  background: none !important;
+  box-shadow: none !important;
+}
+
+/* ============================================================================
+   REDUCED MOTION
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  [data-reveal] { opacity: 1 !important; transform: none !important; }
+}
